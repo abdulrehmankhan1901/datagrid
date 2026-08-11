@@ -536,7 +536,12 @@ export function CanvasWorkspace({
       onDragOver={(event) => event.preventDefault()}
       onDrop={(event) => {
         event.preventDefault();
-        void addImageFiles(event.dataTransfer.files);
+        const bounds = event.currentTarget.getBoundingClientRect();
+        const origin = {
+          x: Math.round((event.clientX - bounds.left - bounds.width / 2 - viewport.x) / viewport.zoom / stride),
+          y: Math.round((event.clientY - bounds.top - bounds.height / 2 - viewport.y) / viewport.zoom / stride),
+        };
+        void addImageFiles(event.dataTransfer.files, origin);
       }}
       style={{
         "--grid-step": `${stride * viewport.zoom}px`,
